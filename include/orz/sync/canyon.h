@@ -5,61 +5,58 @@
 #ifndef ORZ_SYNC_CANYON_H
 #define ORZ_SYNC_CANYON_H
 
-#include <functional>
-#include <mutex>
-#include <condition_variable>
 #include <atomic>
-#include <thread>
-#include <queue>
+#include <condition_variable>
+#include <functional>
 #include <future>
+#include <mutex>
+#include <queue>
+#include <thread>
 
 #include "orz/tools/void_bind.h"
 
-namespace orz {
+namespace orz
+{
 
-    class Canyon {
+  class Canyon {
     public:
-        enum Action {
-            DISCARD,
-            WAITING
-        };
+      enum Action { DISCARD, WAITING };
 
-        explicit Canyon(int size = -1, Action act = WAITING);
+      explicit Canyon(int size = -1, Action act = WAITING);
 
-        ~Canyon();
+      ~Canyon();
 
-        template<typename FUNC>
-        void operator()(FUNC func) const {
-            auto op = [=]() -> void { func(); };
-            this->push(void_bind(func));
-        }
+      template <typename FUNC>
+      void operator()(FUNC func) const {
+        auto op = [=]() -> void { func(); };
+        this->push(void_bind(func));
+      }
 
-        template<typename FUNC, typename... Args>
-        void operator()(FUNC func, Args &&... args) const {
-            this->push(void_bind(func, std::forward<Args>(args)...));
-        }
+      template <typename FUNC, typename... Args>
+      void operator()(FUNC func, Args &&...args) const {
+        this->push(void_bind(func, std::forward<Args>(args)...));
+      }
 
-        void join() const;
-
+      void join() const;
     private:
-        Canyon(const Canyon &that) = delete;
+      Canyon(const Canyon &that) = delete;
 
-        const Canyon &operator=(const Canyon &that) = delete;
+      const Canyon &operator=(const Canyon &that) = delete;
 
-        void push(const VoidOperator &op) const;
+      void push(const VoidOperator &op) const;
 
-        void operating() const;
+      void operating() const;
 
-        mutable std::queue<VoidOperator> _task;
-        mutable std::mutex _mutex;
-        mutable std::condition_variable _cond;
-        std::atomic<bool> _work;
-        int _size;
-        Action _act;
+      mutable std::queue<VoidOperator> _task;
+      mutable std::mutex               _mutex;
+      mutable std::condition_variable  _cond;
+      std::atomic<bool>                _work;
+      int                              _size;
+      Action                           _act;
 
-        std::thread _core;
-    };
+      std::thread _core;
+  };
 
-}
+}  // namespace orz
 
-#endif //ORZ_SYNC_CANYON_H
+#endif  // ORZ_SYNC_CANYON_H

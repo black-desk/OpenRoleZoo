@@ -1,13 +1,8 @@
 #include "orz/io/stream/stream.h"
 
+namespace orz
+{
 
-
-namespace orz {
-
-
-
-/////////////////////////////////////
-
-
+  /////////////////////////////////////
 
 }

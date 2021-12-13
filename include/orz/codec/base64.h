@@ -7,9 +7,10 @@
 
 #include <string>
 
-namespace orz {
-    std::string base64_encode(const std::string &bin);
-    std::string base64_decode(const std::string &codes);
-}
+namespace orz
+{
+  std::string base64_encode(const std::string &bin);
+  std::string base64_decode(const std::string &codes);
+}  // namespace orz
 
-#endif //ORZ_CODEC_BASE64_H
+#endif  // ORZ_CODEC_BASE64_H

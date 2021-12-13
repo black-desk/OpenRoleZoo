@@ -4,5 +4,6 @@
 
 #include "orz/io/jug/piece.h"
 
-namespace orz {
+namespace orz
+{
 }

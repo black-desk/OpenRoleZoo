@@ -5,7 +5,7 @@
 #include "orz/utils/platform.h"
 
 #ifdef WITH_OPENSSL
-#if ORZ_PLATFORM_CC_MSVC
+#  if ORZ_PLATFORM_CC_MSVC
 //#include <openssl/applink.c>
-#endif
+#  endif
 #endif

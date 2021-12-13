@@ -4,11 +4,9 @@
 
 #include "orz/utils/except.h"
 
-namespace orz {
-    Exception::Exception(const std::string &message)
-            : m_message(message) {}
+namespace orz
+{
+  Exception::Exception(const std::string &message) : m_message(message) {}
 
-    const char *Exception::what() const ORZ_NOEXCEPT {
-        return m_message.c_str();
-    }
-}
+  const char *Exception::what() const ORZ_NOEXCEPT { return m_message.c_str(); }
+}  // namespace orz

@@ -7,12 +7,10 @@
 
 ORZ_LITE_CONTEXT(int)
 
-void print_context_int() {
-    ORZ_LOG(orz::INFO) << orz::ctx::lite::ref<int>();
-}
+void print_context_int() { ORZ_LOG(orz::INFO) << orz::ctx::lite::ref<int>(); }
 
 int main() {
-    int a = 12;
-    orz::ctx::lite::bind<int> _bind_int(a);
-    print_context_int();
+  int                       a = 12;
+  orz::ctx::lite::bind<int> _bind_int(a);
+  print_context_int();
 }

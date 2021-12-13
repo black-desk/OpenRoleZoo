@@ -5,9 +5,9 @@
 #include <orz/codec/json.h>
 #include <orz/utils/log.h>
 
-int main(int argc, char *argv[]) {
-    std::string json_string =
-            R"({
+int main(int argc, char *argv []) {
+  std::string json_string =
+    R"({
     "name": "json2sta",
     "date": "@date",
     "stride": 4,
@@ -27,8 +27,8 @@ int main(int argc, char *argv[]) {
     "end2end" : false,
     "data" : "@file@1.jpg"
 })";
-    auto value = orz::json2jug(json_string);
-    ORZ_LOG(orz::INFO) << "Original json: " << json_string;
-    ORZ_LOG(orz::INFO) << "Converted jug: " << value;
-    return 0;
+  auto value = orz::json2jug(json_string);
+  ORZ_LOG(orz::INFO) << "Original json: " << json_string;
+  ORZ_LOG(orz::INFO) << "Converted jug: " << value;
+  return 0;
 }

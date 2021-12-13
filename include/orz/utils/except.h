@@ -11,21 +11,21 @@
 #include "platform.h"
 
 #if ORZ_PLATFORM_CC_MSVC
-#define ORZ_NOEXCEPT
+#  define ORZ_NOEXCEPT
 #else
-#define ORZ_NOEXCEPT noexcept
+#  define ORZ_NOEXCEPT noexcept
 #endif
 
-namespace orz {
-    class Exception : public std::exception {
+namespace orz
+{
+  class Exception : public std::exception {
     public:
-        Exception(const std::string &message);
+      Exception(const std::string &message);
 
-        virtual const char *what() const ORZ_NOEXCEPT override;
-
+      virtual const char *what() const ORZ_NOEXCEPT override;
     private:
-        std::string m_message;
-    };
-}
+      std::string m_message;
+  };
+}  // namespace orz
 
-#endif //ORZ_UTILS_EXCEPT_H
+#endif  // ORZ_UTILS_EXCEPT_H

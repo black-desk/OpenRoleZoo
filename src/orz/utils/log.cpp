@@ -4,7 +4,7 @@
 
 #include "orz/utils/log.h"
 
-namespace orz {
-    LogLevel InnerGlobalLogLevel = INFO;
+namespace orz
+{
+  LogLevel InnerGlobalLogLevel = INFO;
 }
-

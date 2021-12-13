@@ -4,9 +4,4 @@
 
 #include "orz/lego/brick.h"
 
-int main()
-{
-
-
-    return 0;
-}
+int main() { return 0; }

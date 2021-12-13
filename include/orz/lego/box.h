@@ -5,10 +5,6 @@
 #ifndef ORZ_BOX_H
 #define ORZ_BOX_H
 
+class box {};
 
-class box {
-
-};
-
-
-#endif //ORZ_BOX_H
+#endif  // ORZ_BOX_H

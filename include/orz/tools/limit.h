@@ -11,26 +11,23 @@
 
 namespace orz
 {
-    template <int N, typename T>
-    class limit {
+  template <int N, typename T>
+  class limit {
     public:
-        limit() {
-            ++_instance_count;
-            if (_instance_count > N) throw std::logic_error(
-                        std::string("Can not create more the ") +
-                        std::to_string(N) +
-                        std::string(" instances.")
-                );
-        }
-        virtual ~limit() {
-            --_instance_count;
-        }
+      limit() {
+        ++_instance_count;
+        if (_instance_count > N)
+          throw std::logic_error(
+            std::string("Can not create more the ") + std::to_string(N)
+            + std::string(" instances."));
+      }
+      virtual ~limit() { --_instance_count; }
     private:
-        static std::atomic<int> _instance_count;
-    };
+      static std::atomic<int> _instance_count;
+  };
 
-    template <int N, typename T>
-    std::atomic<int> limit<N, T>::_instance_count;
-}
+  template <int N, typename T>
+  std::atomic<int> limit<N, T>::_instance_count;
+}  // namespace orz
 
-#endif //ORZ_TOOLS_LIMIT_H
+#endif  // ORZ_TOOLS_LIMIT_H

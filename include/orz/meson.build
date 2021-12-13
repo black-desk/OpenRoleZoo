@@ -1,0 +1,7 @@
+subdir('codec')
+subdir('io')
+subdir('mem')
+subdir('net')
+subdir('sync')
+subdir('tools')
+subdir('utils')

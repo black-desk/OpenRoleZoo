@@ -551,7 +551,7 @@ namespace orz
         source << std::endl;
       }
 
-      for (int i = 0; i < fileinfo.size(); ++i) {
+      for (int i = 0; i < int(fileinfo.size()); ++i) {
         source << "static " << struct_resources_block_name << " "
                << item_menu_name_header << i << "[] = {" << std::endl;
 

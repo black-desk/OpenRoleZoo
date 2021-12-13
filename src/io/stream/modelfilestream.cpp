@@ -16,11 +16,10 @@ namespace orz
   }
 
   ModelFileInputStream::ModelFileInputStream(const std::string &file) {
-    unsigned int mask   = 0;
-    int64_t      nreads = 0;
-    m_size              = 0;
-    m_istxt             = false;
-    m_file              = file;
+    unsigned int mask = 0;
+    m_size            = 0;
+    m_istxt           = false;
+    m_file            = file;
 
     {
       std::ifstream reader(file.c_str(), std::ios_base::binary);

@@ -25,8 +25,8 @@ namespace orz
   }
 
   FileInputStream::FileInputStream(const std::string &file, bool istxt) :
-    m_file(file),
-    m_in(file.c_str(), istxt ? std::ios_base::in : std::ios_base::binary) {
+    m_in(file.c_str(), istxt ? std::ios_base::in : std::ios_base::binary),
+    m_file(file) {
     if (! m_in.is_open()) {
       orz::Log(ERROR) << "open file:" << file << " failed" << orz::crash;
     }
@@ -57,8 +57,8 @@ namespace orz
   }
 
   FileOutputStream::FileOutputStream(const std::string &file, bool istxt) :
-    m_file(file),
-    m_out(file.c_str(), istxt ? std::ios_base::out : std::ios_base::binary) {
+    m_out(file.c_str(), istxt ? std::ios_base::out : std::ios_base::binary),
+    m_file(file) {
     if (! m_out.is_open()) {
       orz::Log(ERROR) << "open file:" << file << " failed" << orz::crash;
     }

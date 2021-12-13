@@ -3,22 +3,88 @@ project(ORZ)
 
 option(ORZ_INSTALL "Supporting install script" ON)
 
-# global root dir
-set(SOLUTION_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-add_definitions(-DORZ_SOLUTION_DIR="${SOLUTION_DIR}")
-
-# dir for common cmake files
-list(APPEND CMAKE_MODULE_PATH ${SOLUTION_DIR}/cmake)
-list(APPEND CMAKE_PREFIX_PATH ${SOLUTION_DIR}/cmake)
-
 # option for platform
 set(PLATFORM "auto" CACHE STRING "auto, x86 or x64")
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Debug or Release")
 set(CONFIGURATION ${CMAKE_BUILD_TYPE})
 
-# set common compiler flags
-include(LOCAL_FLAGS)
-include(LOCAL_ENV)
+# GCC flags
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+set(CMAKE_CXX_CREATE_SHARED_LIBRARY "${CMAKE_CXX_CREATE_SHARED_LIBRARY} -fPIC")
+set(CMAKE_CXX_CREATE_SHARED_MODULE "${CMAKE_CXX_CREATE_SHARED_MODULE} -fPIC")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+
+message(STATUS "Platform: ${PLATFORM}")
+
+if ("${PLATFORM}" STREQUAL "x86")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m32")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m32")
+elseif ("${PLATFORM}" STREQUAL "x64")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -m64")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -m64")
+endif()
+
+message(STATUS "Configuration: ${CONFIGURATION}")
+
+if ("${CONFIGURATION}" STREQUAL "Debug")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0 -g -ggdb")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g -ggdb")
+else()
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+endif()
+
+# set flags
+
+set(ENV_RUNTIME_DIR "bin")
+set(ENV_LIBRARY_DIR "lib")
+set(ENV_ARCHIVE_DIR "lib")
+set(ENV_HEADER_DIR "include")
+set(ENV_SUFFIX "")
+
+if (MSVC)
+	if ("${PLATFORM}" STREQUAL "")
+	elseif("${PLATFORM}" STREQUAL "auto")
+	else ()
+		set(ENV_RUNTIME_DIR ${ENV_RUNTIME_DIR}/${PLATFORM})
+		set(ENV_LIBRARY_DIR ${ENV_LIBRARY_DIR}/${PLATFORM})
+		set(ENV_ARCHIVE_DIR ${ENV_ARCHIVE_DIR}/${PLATFORM})
+	endif ()
+elseif (MINGW)
+	if ("${PLATFORM}" STREQUAL "")
+	elseif("${PLATFORM}" STREQUAL "auto")
+	else ()
+		set(ENV_RUNTIME_DIR ${ENV_RUNTIME_DIR}/${PLATFORM})
+		set(ENV_LIBRARY_DIR ${ENV_LIBRARY_DIR}/${PLATFORM})
+		set(ENV_ARCHIVE_DIR ${ENV_ARCHIVE_DIR}/${PLATFORM})
+	endif ()
+else()
+	if ("${PLATFORM}" STREQUAL "")
+	elseif ("${PLATFORM}" STREQUAL "auto")
+	elseif ("${PLATFORM}" STREQUAL "x86")
+		set(ENV_RUNTIME_DIR ${ENV_RUNTIME_DIR})
+		set(ENV_LIBRARY_DIR ${ENV_LIBRARY_DIR}32)
+		set(ENV_ARCHIVE_DIR ${ENV_ARCHIVE_DIR}32)
+	elseif ("${PLATFORM}" STREQUAL "x64")
+		set(ENV_RUNTIME_DIR ${ENV_RUNTIME_DIR})
+		set(ENV_LIBRARY_DIR ${ENV_LIBRARY_DIR}64)
+		set(ENV_ARCHIVE_DIR ${ENV_ARCHIVE_DIR}64)
+	else ()
+		set(ENV_RUNTIME_DIR ${ENV_RUNTIME_DIR}/${PLATFORM})
+		set(ENV_LIBRARY_DIR ${ENV_LIBRARY_DIR}/${PLATFORM})
+		set(ENV_ARCHIVE_DIR ${ENV_ARCHIVE_DIR}/${PLATFORM})
+	endif ()
+endif()
+
+if ("${CONFIGURATION}" STREQUAL "Debug")
+	set(ENV_SUFFIX "d")
+endif ()
+
+set(ENV_INCLUDE_DIR ${ENV_HEADER_DIR})
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/build CACHE STRING "set install prefix")
 install(CODE "MESSAGE(\"Installing into ${CMAKE_INSTALL_PREFIX}\")")
@@ -31,29 +97,3 @@ if (LOCAL_OUTPUT_DIR)
 endif ()
 
 add_subdirectory(src)
-
-# project files for clion
-#FILE(GLOB_RECURSE TEST_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
-FILE(GLOB_RECURSE TOOL_FILES ${PROJECT_SOURCE_DIR}/tools/*.cpp)
-
-include_directories(${PROJECT_SOURCE_DIR}/include)
-
-foreach (path ${TEST_FILES})
-    string(REGEX MATCH "[^/]*.[(c)|(cc)|(cpp)]$" file_ext ${path})
-    string(REGEX MATCH "^[^.]*" file ${file_ext})
-    add_executable(test_${file} ${path})
-    set_target_properties(test_${file} PROPERTIES OUTPUT_NAME test_${file}${ENV_SUFFIX})
-    target_link_libraries(test_${file} ${PROJECT_NAME}_STATIC)
-    # set_target_properties(test_${file} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${LOCAL_OUTPUT_DIR}/lib)
-endforeach ()
-
-foreach (path ${TOOL_FILES})
-    string(REGEX MATCH "[^/]*.[(c)|(cc)|(cpp)]$" file_ext ${path})
-    string(REGEX MATCH "^[^.]*" file ${file_ext})
-    add_executable(tool_${file} ${path})
-    set_target_properties(tool_${file} PROPERTIES OUTPUT_NAME ${file}${ENV_SUFFIX})
-    target_link_libraries(tool_${file} ${PROJECT_NAME}_STATIC)
-    install(TARGETS tool_${file}
-		RUNTIME DESTINATION ${ENV_RUNTIME_DIR}
-	)
-endforeach ()

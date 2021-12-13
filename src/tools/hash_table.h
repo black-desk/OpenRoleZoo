@@ -5,7 +5,9 @@
 #ifndef ORZ_HASH_TABLE_H
 #define ORZ_HASH_TABLE_H
 
+#include <cstring>
 #include <string>
+#include <vector>
 
 namespace orz
 {

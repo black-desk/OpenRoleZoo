@@ -5,6 +5,7 @@
 #ifndef ORZ_MEM_POT_H
 #define ORZ_MEM_POT_H
 
+#include <functional>
 #include <memory>
 #include <mutex>
 

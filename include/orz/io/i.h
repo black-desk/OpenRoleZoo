@@ -31,12 +31,13 @@ namespace orz
 
           int_type uflow() override;
 
-          streampos seekoff(
-            streamoff          off,
+          std::streampos seekoff(
+            std::streamoff     off,
             ios_base::seekdir  way,
             ios_base::openmode which) override;
 
-          streampos seekpos(streampos sp, ios_base::openmode which) override;
+          std::streampos seekpos(
+            std::streampos sp, ios_base::openmode which) override;
         private:
           const void *m_data;
           size_t      m_size;
